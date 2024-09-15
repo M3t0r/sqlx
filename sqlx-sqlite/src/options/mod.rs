@@ -44,10 +44,17 @@ use sqlx_core::IndexMap;
 /// use sqlx::sqlite::{SqliteConnectOptions, SqliteJournalMode};
 /// use std::str::FromStr;
 ///
-/// let conn = SqliteConnectOptions::from_str("sqlite://data.db")?
+/// let opts = SqliteConnectOptions::from_str("sqlite://data.db")?
 ///     .journal_mode(SqliteJournalMode::Wal)
-///     .read_only(true)
-///     .connect().await?;
+///     .read_only(true);
+///
+/// // use in a pool
+/// let pool = SqlitePool::connect_with(opts).await?;
+///
+/// // or connect directly
+/// # let opts = SqliteConnectOptions::from_str("sqlite://data.db")?;
+/// let conn = opts.connect().await?;
+/// 
 /// #
 /// # Ok(())
 /// # }
